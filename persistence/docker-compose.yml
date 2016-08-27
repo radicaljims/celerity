@@ -1,0 +1,39 @@
+version: '2'
+services:
+    postgrest:
+        image: begriffs/postgrest
+        container_name: postgrest
+        ports:
+            - "3000:3000"
+        environment:
+            # TODO: probably best to have the anon role not be valhalla but some
+            # super low-cred role
+            POSTGRES_ANONYMOUS:       valhalla
+            PG_ENV_POSTGRES_USER:     valhalla
+            PG_ENV_POSTGRES_PASSWORD: valhalla
+            PG_ENV_POSTGRES_DB:       valhalla
+            POSTGRES_DB_NAME:         valhalla
+            PG_PORT_5432_TCP_ADDR:    postgres
+            PG_PORT_5432_TCP_PORT:    5432
+            SCHEMA: public
+            JWT_SECRET: secret
+            POOL_SIZE: 10
+        depends_on:
+            - postgres
+        links:
+            - postgres:postgres
+
+    postgres:
+        container_name: postgres-9.5
+        image: postgres-9.5
+        build:
+            context: .
+            dockerfile: ./dockerfiles/Create.dockerfile
+        ports:
+            - "5555:5432"
+        volumes:
+            - postgres-9.5-data:/var/lib/postgresql/data
+
+volumes:
+    postgres-9.5-data:
+        driver: local
