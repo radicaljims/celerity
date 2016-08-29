@@ -1,10 +1,10 @@
-module ToastTypes exposing (..)
+module CelerityTypes exposing (..)
 
 import Time exposing (Time)
 
 type alias Id = Int
 
-type alias Toast =
+type alias Copy =
   { kind : String
   , title : String
   , message : String

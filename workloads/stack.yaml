@@ -1,0 +1,10 @@
+flags: {}
+extra-package-dbs: []
+packages:
+- '.'
+- location:
+    git: https://github.com/jfischoff/twitch
+    commit: ac4224a194cc29c6303db2d9f03566df876499a3
+  extra-dep: true
+extra-deps: []
+resolver: lts-6.11

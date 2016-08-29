@@ -19,8 +19,6 @@ type alias Styles = List (String, String)
 center : Styles
 center =
   [ display flex'
-  -- Note that properties get camel cased: justify-content -> justifyContent
-  -- That's just part of Elm's style guide
   , justifyContent spaceAround
   -- the '<|' is pipey syntax for function application with the input to the left
   -- so what would otherwise be written f(x) becomes x |> f.
@@ -32,8 +30,8 @@ center =
   , maxWidth (px 700)
   ]
 
-toast : Styles
-toast =
+copy : Styles
+copy =
   [ justifyContent spaceAround
   , margin <| (px 20) ++ " " ++ auto
   , fontSize (px 20)
