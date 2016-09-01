@@ -1,4 +1,1 @@
-CREATE TABLE greets (
-       id serial PRIMARY KEY,
-       name varchar (50) NOT NULL
-);
+CREATE TABLE fsevents (id serial PRIMARY KEY, data jsonb);

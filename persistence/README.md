@@ -4,6 +4,29 @@ Some infrastructure for building and running a Postgres container. ~~Might one d
 
 *Now with 100% more ```postgrest```!*
 
+### Posting JSON documents
+
+The version of postgrest I'm using is a little peculiar.
+
+Assuming we have a table that looks like this:
+
+```sql
+CREATE TABLE fsevents (id serial PRIMARY KEY, data jsonb);
+```
+
+To POST something into that with postgrest you have to format the payload like such:
+
+```json
+[{
+    "data": {"add":"/hi.there"}
+    
+}]
+```
+
+Note that we're specifying the column to write the JSON into, and we've wrapped the object in a list.
+
+See this issue: https://github.com/begriffs/postgrest/issues/682
+
 ### Instructions
 
 1. Be on a Docker host
