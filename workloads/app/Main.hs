@@ -19,21 +19,18 @@ import Twitch
 
 import Lib
 
+-- We have this combined 'upsert' since either twitch or the other underlying mechanisms
+-- will sometimes only return a 'modify' event when creating a new file
 handleAddOrMod :: String -> IO ()
 handleAddOrMod n = do
-  print "Adding the following file:"
-  print n
-
--- handleMod :: String -> IO ()
--- handleMod m = do
---   print "The following file was modified:"
---   print m
+  print ("The following file was added or modified: " ++ n)
 
 handleDel :: String -> IO ()
 handleDel d = do
-  print "The following file was deleted:"
-  print d
+  print ("The following file was deleted: " ++ d)
+
+opts = Twitch.Options NoLogger Nothing Nothing True NoDebounce 0 (10^(6 :: Int)) False
 
 main :: IO ()
-main = defaultMain $ do
+main = defaultMainWithOptions opts $ do
   (fromString "*.*") |> handleAddOrMod |- handleDel
