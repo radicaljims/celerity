@@ -61,15 +61,15 @@ dataDecoder =
             ("eventType" := Json.string)
             ("fileName" := Json.string)
 
-copiesDecoder : Json.Decoder Copy
-copiesDecoder =
+copyDecoder : Json.Decoder Copy
+copyDecoder =
     Json.object2
         Copy
             ("id" := Json.int)
             ("data" := dataDecoder)
 
 copyListDecoder : Json.Decoder (List Copy)
-copyListDecoder = Json.list copiesDecoder
+copyListDecoder = Json.list copyDecoder
 
 renderCopy : Copy -> Html Comms
 renderCopy copy =
