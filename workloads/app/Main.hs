@@ -24,7 +24,7 @@ import Lib
 
 -- TODO: let's have a proper type of events so it's not an evil string!
 create_json :: String -> String -> Value
-create_json event_type file_name = object [(fromString "data") .= object [(fromString "event_type") .= event_type, (fromString "file_name") .= file_name]]
+create_json event_type file_name = object [(fromString "data") .= object [(fromString "eventType") .= event_type, (fromString "fileName") .= file_name]]
 
 postEvent event_type file_name = do
   r <- post "http://localhost:3000/fsevents" (create_json event_type file_name)

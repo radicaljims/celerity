@@ -4,10 +4,12 @@ import Time exposing (Time)
 
 type alias Id = Int
 
+type alias Data =
+    { eventType : String
+    , fileName : String
+    }
+
 type alias Copy =
-  { kind : String
-  , title : String
-  , message : String
-  , id : Id
-  , started : Time
+  { id : Id
+  , data : Data
   }
