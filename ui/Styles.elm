@@ -64,7 +64,7 @@ addormod =
   [ margin <| (px 20) ++ " " ++ auto
   , padding (px 10)
   , fontSize (px 20)
-  , backgroundColor (color' darkGreen)
+  , backgroundColor (color' blue)
   , width (pc 100)
   ]
 
@@ -73,7 +73,7 @@ delete =
   [ margin <| (px 20) ++ " " ++ auto
   , padding (px 10)
   , fontSize (px 20)
-  , backgroundColor (color' darkRed)
+  , backgroundColor (color' darkPurple)
   , width (pc 100)
   ]
 
