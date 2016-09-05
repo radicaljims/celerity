@@ -16,26 +16,69 @@ type alias Styles = List (String, String)
 -- I know basically nothing about CSS, so I'm assuming the functions
 -- used below are familiar to you? They should correspond to CSS properties or whatever.
 --
+
+container : Styles
+container =
+  [ width (pc 100)
+  , height (pc 100)
+  ]
+
 center : Styles
 center =
   [ display flex'
   , justifyContent spaceAround
-  -- the '<|' is pipey syntax for function application with the input to the left
-  -- so what would otherwise be written f(x) becomes x |> f.
   , margin <| (px 20) ++ " " ++ auto
   , fontSize (px 20)
-  -- if you are weirded out by what the hsl is doing, look at the Color reference above
   , color <| color' (hsl (202 * pi / 180) 0.24 0.27)
   , width (pc 100)
-  , maxWidth (px 700)
+  , backgroundColor (color' darkGrey)
   ]
 
-copy : Styles
-copy =
-  [ justifyContent spaceAround
+header : Styles
+header =
+  [ display flex'
+  , paddingLeft (px 10)
   , margin <| (px 20) ++ " " ++ auto
   , fontSize (px 20)
-  , backgroundColor (color' green)
+  , color (color' white)
   , width (pc 100)
-  , maxWidth (px 700)
+  , backgroundColor (color' lightOrange)
   ]
+
+body : Styles
+body =
+  [ margin <| (px 20) ++ " " ++ auto
+  , fontSize (px 20)
+  , color (color' white)
+  , width (pc 100)
+  ]
+
+plainEvent : Styles
+plainEvent =
+  [ fontWeight "normal"
+  , backgroundColor (color' lightOrange)
+  ]
+
+addormod : Styles
+addormod =
+  [ margin <| (px 20) ++ " " ++ auto
+  , padding (px 10)
+  , fontSize (px 20)
+  , backgroundColor (color' darkGreen)
+  , width (pc 100)
+  ]
+
+delete : Styles
+delete =
+  [ margin <| (px 20) ++ " " ++ auto
+  , padding (px 10)
+  , fontSize (px 20)
+  , backgroundColor (color' darkRed)
+  , width (pc 100)
+  ]
+
+fileName : Styles
+fileName =
+    [ fontWeight "lighter"
+    , fontSize (px 15)
+    ]
