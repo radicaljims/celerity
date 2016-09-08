@@ -30,12 +30,9 @@ container =
 center : Styles
 center =
   [ display flex'
-  -- , justifyContent spaceAround
   , margin <| (px 20) ++ " " ++ auto
   , fontSize (px 15)
-  -- , color <| color' (hsl (202 * pi / 180) 0.24 0.27)
   , width (pc 100)
-  -- , backgroundColor (color' darkGrey)
   ]
 
 header : Styles
@@ -67,16 +64,16 @@ addormod : Styles
 addormod =
   [
     fontSize (px 15)
-  , backgroundColor (color' blue)
-  , color (color' white)
+  -- , backgroundColor (color' blue)
+  -- , color (color' white)
   ]
 
 delete : Styles
 delete =
   [
     fontSize (px 15)
-  , backgroundColor (color' darkPurple)
-  , color (color' white)
+  -- , backgroundColor (color' darkPurple)
+  -- , color (color' white)
   ]
 
 fileName : Styles
