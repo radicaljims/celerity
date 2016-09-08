@@ -1,7 +1,9 @@
+import Bootstrap.Html exposing (..)
 import Html exposing (..)
-import Html.Attributes exposing (style)
+import Html.Attributes as A exposing (style)
 import Html.App as App
 import Html.Events exposing (..)
+import Html.Shorthand exposing (..)
 import Http
 import Json.Decode as Json exposing (..)
 import List exposing (..)
@@ -87,20 +89,18 @@ lookup possibilities key default =
 
 renderCopy : Copy -> Html Comms
 renderCopy copy =
-  div
-    [ style (lookup styleTypes copy.data.eventType Styles.plainEvent) ]
-    [ span
-        []
-        [ span [] [text (lookup prettyTypes copy.data.eventType copy.data.eventType)]
-        , br [] []
-        , span [style Styles.fileName]  [text copy.data.fileName]]
-    ]
+    tr
+      [ style (lookup styleTypes copy.data.eventType Styles.plainEvent) ]
+      [ td_ [text (lookup prettyTypes copy.data.eventType copy.data.eventType)]
+      , td  [(style Styles.fileName)] [text copy.data.fileName]]
 
 view : Model -> Html Comms
 view model =
-  div
-    [style Styles.container]
-    [header, fetch, (body model)]
+    container_
+        [ Styles.stylesheet "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+        , row_ [header]
+        , row_ [fetch]
+        , row_ [(body model)]]
 
 makeButton : Comms -> String -> Html Comms
 makeButton action btn_text =
@@ -122,9 +122,16 @@ fetch =
 
 body : Model -> Html Comms
 body model =
-  div
-    [style Styles.body]
-    (List.map renderCopy model.copies)
+    table
+        [ A.class "table col-xs-10 table-striped" ]
+        [ thead_
+              [ tr_
+                    [ th [A.class "col-xs-2"] [text "Event"]
+                    , th_ [text "File"]
+                    ]
+              ]
+              , tbody_ (List.map renderCopy model.copies)
+        ]
 
 -- testString : String
 -- testString = "[{\"id\" : 1, \"data\" : { \"eventType\" : \"addormod\", \"fileName\" : \"/hi.there\"}}]"

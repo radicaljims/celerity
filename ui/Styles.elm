@@ -3,19 +3,23 @@ module Styles exposing (..)
 import Color exposing (..)
 -- reference: http://package.elm-lang.org/packages/elm-lang/core/4.0.3/Color
 
+import Html exposing (..)
+import Html.Attributes as A
+
 import Style exposing (..)
--- reference: http://package.elm-lang.org/packages/seanhess/elm-style/1.0.1/
--- reference: http://package.elm-lang.org/packages/seanhess/elm-style/1.0.1/Style
--- reference: https://github.com/seanhess/elm-style/blob/1.0.1/example/MyStyles.elm
+
+import Bootstrap.Html exposing (..)
 
 type alias Styles = List (String, String)
 
--- The elm-style library (see the references above!) lets us write our CSS
--- in Elm, similarly to elm-html.
---
--- I know basically nothing about CSS, so I'm assuming the functions
--- used below are familiar to you? They should correspond to CSS properties or whatever.
---
+-- Copied from https://github.com/twopoint718/elmchat/blob/master/src/View.elm
+-- Thanks friend!
+stylesheet : String -> Html a
+stylesheet href =
+  node "link"
+    [ A.rel "stylesheet"
+    , A.href href
+    ] []
 
 container : Styles
 container =
@@ -63,8 +67,9 @@ addormod : Styles
 addormod =
   [ margin <| (px 20) ++ " " ++ auto
   , padding (px 10)
-  , fontSize (px 20)
+  , fontSize (px 15)
   , backgroundColor (color' blue)
+  , color (color' white)
   , width (pc 100)
   ]
 
@@ -72,8 +77,9 @@ delete : Styles
 delete =
   [ margin <| (px 20) ++ " " ++ auto
   , padding (px 10)
-  , fontSize (px 20)
+  , fontSize (px 15)
   , backgroundColor (color' darkPurple)
+  , color (color' white)
   , width (pc 100)
   ]
 
