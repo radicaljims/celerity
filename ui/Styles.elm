@@ -30,12 +30,12 @@ container =
 center : Styles
 center =
   [ display flex'
-  , justifyContent spaceAround
+  -- , justifyContent spaceAround
   , margin <| (px 20) ++ " " ++ auto
-  , fontSize (px 20)
-  , color <| color' (hsl (202 * pi / 180) 0.24 0.27)
+  , fontSize (px 15)
+  -- , color <| color' (hsl (202 * pi / 180) 0.24 0.27)
   , width (pc 100)
-  , backgroundColor (color' darkGrey)
+  -- , backgroundColor (color' darkGrey)
   ]
 
 header : Styles
@@ -65,22 +65,18 @@ plainEvent =
 
 addormod : Styles
 addormod =
-  [ margin <| (px 20) ++ " " ++ auto
-  , padding (px 10)
-  , fontSize (px 15)
+  [
+    fontSize (px 15)
   , backgroundColor (color' blue)
   , color (color' white)
-  , width (pc 100)
   ]
 
 delete : Styles
 delete =
-  [ margin <| (px 20) ++ " " ++ auto
-  , padding (px 10)
-  , fontSize (px 15)
+  [
+    fontSize (px 15)
   , backgroundColor (color' darkPurple)
   , color (color' white)
-  , width (pc 100)
   ]
 
 fileName : Styles

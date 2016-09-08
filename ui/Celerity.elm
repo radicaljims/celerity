@@ -1,6 +1,6 @@
 import Bootstrap.Html exposing (..)
 import Html exposing (..)
-import Html.Attributes as A exposing (style)
+import Html.Attributes as A exposing (style, class)
 import Html.App as App
 import Html.Events exposing (..)
 import Html.Shorthand exposing (..)
@@ -77,6 +77,9 @@ prettyTypes = [("addormod", "Added or Modified"), ("delete", "Deleted")]
 styleTypes : List (String, Styles.Styles)
 styleTypes = [("addormod", Styles.addormod), ("delete", Styles.delete)]
 
+classTypes : List (String, String)
+classTypes = [("addormod", "success"), ("delete", "danger")]
+
 lookup : List (String, a) -> String -> a -> a
 lookup possibilities key default =
     case possibilities of
@@ -89,9 +92,10 @@ lookup possibilities key default =
 
 renderCopy : Copy -> Html Comms
 renderCopy copy =
-    tr
-      [ style (lookup styleTypes copy.data.eventType Styles.plainEvent) ]
-      [ td_ [text (lookup prettyTypes copy.data.eventType copy.data.eventType)]
+    let eventStyle = (lookup styleTypes copy.data.eventType Styles.plainEvent)
+    in
+    tr_
+      [ td [style eventStyle] [text (lookup prettyTypes copy.data.eventType copy.data.eventType)]
       , td  [(style Styles.fileName)] [text copy.data.fileName]]
 
 view : Model -> Html Comms
@@ -123,7 +127,7 @@ fetch =
 body : Model -> Html Comms
 body model =
     table
-        [ A.class "table col-xs-10 table-striped" ]
+        [ A.class "table col-xs-10 table-hover table-striped" ]
         [ thead_
               [ tr_
                     [ th [A.class "col-xs-2"] [text "Event"]
