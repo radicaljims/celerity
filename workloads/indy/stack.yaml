@@ -1,0 +1,17 @@
+flags: {}
+extra-package-dbs: []
+packages:
+- '.'
+- location:
+    git: https://github.com/haskell-servant/servant-quickcheck
+    commit: 343f55f61a98900410b2e97cc7cea6dee25b5eb7
+  extra-dep: true
+extra-deps:
+- servant-0.8
+- servant-client-0.8
+- servant-docs-0.8
+- servant-js-0.8
+- servant-mock-0.8
+- servant-server-0.8
+- servant-swagger-0.8
+resolver: lts-6.11
