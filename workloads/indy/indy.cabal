@@ -15,8 +15,52 @@ cabal-version:       >=1.10
 
 library
   hs-source-dirs:      src
-  exposed-modules:     Lib
+  exposed-modules:     Api Types Server
   build-depends:       base >= 4.7 && < 5
+                     , base-compat
+                     , aeson
+                     , aeson-compat
+                     , attoparsec
+                     , bytestring
+                     , directory
+                     , http-media
+                     , http-types
+                     , mtl
+                     , servant == 0.8.*
+                     , servant-server == 0.8.*
+                     , servant-mock == 0.8.*
+                     , string-conversions
+                     , QuickCheck
+                     , text
+                     , time
+                     , wai
+                     , warp
+  default-language:    Haskell2010
+
+executable indy-mock
+  hs-source-dirs:      mock
+  main-is:             Mock.hs
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+  build-depends:       base
+                     , base-compat
+                     , aeson
+                     , aeson-compat
+                     , attoparsec
+                     , bytestring
+                     , directory
+                     , indy
+                     , http-media
+                     , http-types
+                     , mtl
+                     , servant == 0.8.*
+                     , servant-mock == 0.8.*
+                     , servant-server == 0.8.*
+                     , string-conversions
+                     , QuickCheck
+                     , text
+                     , time
+                     , wai
+                     , warp
   default-language:    Haskell2010
 
 executable indy-exe
