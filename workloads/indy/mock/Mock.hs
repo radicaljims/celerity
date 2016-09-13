@@ -13,6 +13,7 @@ import Prelude.Compat
 
 import Network.Wai
 import Network.Wai.Handler.Warp
+
 import Servant
 
 import Api

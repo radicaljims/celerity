@@ -22,16 +22,17 @@ main = App.program
        }
 
 type alias Model =
-    { copies : List Copy
+    { copies : List Data
     , message : String
     }
 
 emptyModel : Model
 emptyModel =  { copies = [], message = "" }
 
+init : (Model, Cmd a)
 init = emptyModel ! []
 
-type Comms =  NoOp | Get | GetSuccess (List Copy) | GetFailure String
+type Comms =  NoOp | Get | GetSuccess (List Data) | GetFailure String
 
 update : Comms -> Model -> (Model, Cmd Comms)
 update comm model =
@@ -49,27 +50,20 @@ update comm model =
 
 fetchCopies : Cmd Comms
 fetchCopies =
-    Http.get copyListDecoder "http://localhost:3000/fsevents"
+    Http.get copyListDecoder "http://localhost:8081/fsevents"
         |> Task.mapError toString
         |> Task.perform GetFailure GetSuccess
 
-
 dataDecoder : Json.Decoder Data
 dataDecoder =
-    Json.object2
+    Json.object3
         Data
+            ("timeStamp" := Json.string)
             ("eventType" := Json.string)
-            ("fileName" := Json.string)
+            ("filePath" := Json.string)
 
-copyDecoder : Json.Decoder Copy
-copyDecoder =
-    Json.object2
-        Copy
-            ("id" := Json.int)
-            ("data" := dataDecoder)
-
-copyListDecoder : Json.Decoder (List Copy)
-copyListDecoder = Json.list copyDecoder
+copyListDecoder : Json.Decoder (List Data)
+copyListDecoder = Json.list dataDecoder
 
 prettyTypes : List (String, String)
 prettyTypes = [("addormod", "Added or Modified"), ("delete", "Deleted")]
@@ -90,20 +84,20 @@ lookup possibilities key default =
                         lookup ps key default
         [] -> default
 
-renderCopy : Copy -> Html Comms
+renderCopy : Data -> Html Comms
 renderCopy copy =
-    let eventStyle = (lookup styleTypes copy.data.eventType Styles.plainEvent)
+    let eventStyle = (lookup styleTypes copy.eventType Styles.plainEvent)
     in
     tr_
-      [ td [style eventStyle] [text (lookup prettyTypes copy.data.eventType copy.data.eventType)]
-      , td  [(style Styles.fileName)] [text copy.data.fileName]]
+      [ td [style eventStyle] [text (lookup prettyTypes copy.eventType copy.eventType)]
+      , td  [(style Styles.filePath)] [text copy.filePath]]
 
 view : Model -> Html Comms
 view model =
     container_
         [ Styles.stylesheet "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
         , row_ [header]
-        , row_ [fetch]
+        , row_ [fetch model]
         , row_ [(body model)]]
 
 makeButton : Comms -> String -> Html Comms
@@ -118,11 +112,18 @@ header =
     [style Styles.header]
     [ h1 [] [text "Celerity"]]
 
-fetch : Html Comms
-fetch =
-    div
-        [style Styles.center]
-        [makeButton Get "Get Events"]
+fetch : Model -> Html Comms
+fetch model =
+    container_
+        [ Styles.stylesheet "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+        , row_
+            (append
+                 [(colMd_ 1 1 1 [makeButton Get "Get Events"])]
+                 [(colMd_ 0 0 0 [text model.message])])
+                 -- [(colXs_ 0 [makeButton Get "Get Events"])]
+                 -- [(colXs_ 0 [text model.message])])
+                 -- [colXsOffset_ 0 1 [text model.message]])
+        ]
 
 body : Model -> Html Comms
 body model =
@@ -138,7 +139,8 @@ body model =
         ]
 
 -- testString : String
--- testString = "[{\"id\" : 1, \"data\" : { \"eventType\" : \"addormod\", \"fileName\" : \"/hi.there\"}}]"
+-- -- testString = "[{\"id\" : 1, \"data\" : { \"eventType\" : \"addormod\", \"filePath\" : \"/hi.there\"}}]"
+-- testString = "[{\"timeStamp\":\"time stamp!\", \"eventType\":\"addormod\", \"filePath\": \"/hi.there\"}]"
 
 -- fuddyDuddy maybeCopies =
 --     case maybeCopies of

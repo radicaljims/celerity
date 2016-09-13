@@ -5,11 +5,12 @@ import Time exposing (Time)
 type alias Id = Int
 
 type alias Data =
-    { eventType : String
-    , fileName : String
+    { timeStamp : String
+    , eventType : String
+    , filePath : String
     }
 
-type alias Copy =
-  { id : Id
-  , data : Data
-  }
+-- type alias Copy =
+--   { id : Id
+--   , data : Data
+--   }

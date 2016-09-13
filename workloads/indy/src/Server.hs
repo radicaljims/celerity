@@ -1,5 +1,6 @@
 module Server(app1, mockServer) where
 
+import Network.Wai.Middleware.Cors
 import Servant
 import Servant.Mock
 
@@ -13,4 +14,4 @@ app1 :: Application
 app1 = serve fsEventsAPI server1
 
 mockServer :: Application
-mockServer = serve fsEventsAPI $ mock fsEventsAPI Proxy
+mockServer = simpleCors (serve fsEventsAPI $ mock fsEventsAPI Proxy)

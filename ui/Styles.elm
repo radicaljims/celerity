@@ -27,8 +27,8 @@ container =
   , height (pc 100)
   ]
 
-center : Styles
-center =
+fetch : Styles
+fetch =
   [ display flex'
   , margin <| (px 20) ++ " " ++ auto
   , fontSize (px 15)
@@ -76,8 +76,8 @@ delete =
   -- , color (color' white)
   ]
 
-fileName : Styles
-fileName =
+filePath : Styles
+filePath =
     [ fontWeight "lighter"
     , fontSize (px 15)
     ]
