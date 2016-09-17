@@ -6,6 +6,14 @@ packages:
     git: https://github.com/haskell-servant/servant-quickcheck
     commit: 343f55f61a98900410b2e97cc7cea6dee25b5eb7
   extra-dep: true
+- location:
+    git: https://www.github.com/mattjbray/elm-export
+    commit: a8a5b61798fbb04e081f5c83cab76ceaabc5ba13
+  extra-dep: True
+- location:
+    git: https://www.github.com/mattjbray/servant-elm
+    commit: 749e09ed9d623284b3b90d1ae1ccba7ae79ad381
+  extra-dep: True
 extra-deps:
 - servant-0.8
 - servant-client-0.8

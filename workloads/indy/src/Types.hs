@@ -1,20 +1,30 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE DeriveGeneric     #-}
 {-# LANGUAGE OverloadedStrings #-}
-module Types (FSEvent, fsevents1) where
+module Types (FSEvent, Directory, FileContent, fsevents1, directory1, fsevents2, content1) where
 
-import Data.Aeson
-import Data.Time.Clock.POSIX
-import Data.List
-import Data.Time.Calendar
-import GHC.Generics
-import Test.QuickCheck (Gen, choose, elements, listOf, listOf1, resize)
-import Test.QuickCheck.Arbitrary
+import           Data.Aeson
+import           Data.List
+import           Data.Time.Calendar
+import           Data.Time.Clock.POSIX
+import           GHC.Generics
+import           Test.QuickCheck           (Gen, choose, elements, listOf,
+                                            listOf1, resize)
+import           Test.QuickCheck.Arbitrary
 
 data FSEvent =
   FSEvent { eventType :: String
-          , filePath :: String
+          , filePath  :: String
           , timeStamp :: String
           }
+  deriving (Eq,Show,Generic)
+
+
+data Directory =
+  Directory {directoryPath :: String}
+  deriving (Eq,Show,Generic)
+
+data FileContent =
+  FileContent {content :: String}
   deriving (Eq,Show,Generic)
 
 -- https://gist.github.com/roman/1252086/432097a8a2f519bcf861578818b8096f60d22626
@@ -35,7 +45,29 @@ instance Arbitrary FSEvent where
 
 instance ToJSON FSEvent
 
+instance ToJSON Directory
+
+instance Arbitrary Directory where
+  arbitrary = do
+    path <- genPath
+    return (Directory path)
+
+instance ToJSON FileContent
+instance Arbitrary FileContent where
+  arbitrary = return $ FileContent "content"
+
 fsevents1 :: [FSEvent]
 fsevents1 =
   [FSEvent "addormod" "/tmp/hi.there" (getOffsetTime 50000)
   ,FSEvent "delete" "/tmp/good.bye" (getOffsetTime 10000)]
+
+fsevents2 :: [FSEvent]
+fsevents2 =
+  [FSEvent "addormod" "/tmp/hi.there" (getOffsetTime 50000)
+  ,FSEvent "delete" "/tmp/good.bye" (getOffsetTime 10000)]
+
+directory1 :: [Directory]
+directory1 = [Directory "/home/jims"]
+
+content1 :: FileContent
+content1 = FileContent "content"
