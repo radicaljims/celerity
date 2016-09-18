@@ -13,7 +13,8 @@
         "evancz/elm-http" : "3.0.0 < v <= 3.0.1",
         "seanhess/elm-style" : "1.0.1 <= v < 1.0.2",
         "circuithub/elm-bootstrap-html" : "7.0.0 <= v < 7.1.0",
-        "circuithub/elm-html-shorthand" : "11.0.0 <= v < 12.0.0"
+        "circuithub/elm-html-shorthand" : "11.0.0 <= v < 12.0.0",
+        "debois/elm-mdl" : "7.6.0 <= v <= 7.7.0"
     },
     "elm-version": "0.17.0 <= v < 0.18.0"
 }

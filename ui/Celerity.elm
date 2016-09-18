@@ -10,6 +10,14 @@ import List exposing (..)
 import String exposing (contains)
 import Task exposing (Task)
 
+import Material
+import Material.Color as Color
+import Material.Progress as Progress
+import Material.Spinner as Spinner
+import Material.Scheme
+import Material.Button as Button
+import Material.Options exposing (css)
+
 import CelerityTypes exposing (..)
 import Styles
 
@@ -24,15 +32,20 @@ main = App.program
 type alias Model =
     { copies : List Data
     , message : String
+    , mdl : Material.Model
+    , fetching : Bool
     }
 
 emptyModel : Model
-emptyModel =  { copies = [], message = "" }
+emptyModel =  { copies = [], message = "" , mdl = Material.model
+              , fetching = False
+              }
 
 init : (Model, Cmd a)
 init = emptyModel ! []
 
 type Comms =  NoOp | Get | GetSuccess (List Data) | GetFailure String
+           | Mdl (Material.Msg Comms)
 
 update : Comms -> Model -> (Model, Cmd Comms)
 update comm model =
@@ -40,13 +53,18 @@ update comm model =
       NoOp -> model ! []
 
       Get ->
-          { model | message = "Fetching copies..." } ! [fetchCopies]
+          { model | message = "Fetching copies...", fetching = True } ! [fetchCopies]
 
       GetSuccess copies ->
-          { model | message = "Fetched copies", copies = copies} ! []
+          { model | message = "Fetched copies", copies = copies, fetching = False} ! []
 
       GetFailure error ->
-          { model | message = error } ! []
+          { model | message = error, fetching = False } ! []
+
+      Mdl msg' ->
+          Material.update msg' model
+
+type alias Mdl = Material.Model
 
 fetchCopies : Cmd Comms
 fetchCopies =
@@ -118,12 +136,28 @@ fetch model =
         [ Styles.stylesheet "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
         , row_
             (append
-                 [(colMd_ 1 1 1 [makeButton Get "Get Events"])]
-                 [(colMd_ 0 0 0 [text model.message])])
-                 -- [(colXs_ 0 [makeButton Get "Get Events"])]
-                 -- [(colXs_ 0 [text model.message])])
-                 -- [colXsOffset_ 0 1 [text model.message]])
+              [ Button.render Mdl [0] model.mdl
+                    [ Button.raised, Button.colored, Button.onClick Get, css "margin" "0 10px 0 10px"]
+                    [ text "Get Events" ]
+              ]
+              (if model.fetching then [Progress.indeterminate] else [])
+            )
         ]
+    |> Material.Scheme.top
+
+
+-- fetch : Model -> Html Comms
+-- fetch model =
+--     container_
+--         [ Styles.stylesheet "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+--         , row_
+--             (append
+--                  [(colMd_ 1 1 1 [makeButton Get "Get Events"])]
+--                  [(colMd_ 0 0 0 [text model.message])])
+--                  -- [(colXs_ 0 [makeButton Get "Get Events"])]
+--                  -- [(colXs_ 0 [text model.message])])
+--                  -- [colXsOffset_ 0 1 [text model.message]])
+--         ]
 
 body : Model -> Html Comms
 body model =
