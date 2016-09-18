@@ -59,10 +59,10 @@ body : Model -> Html Msg
 body model =
   Lists.ul
     [ css "margin" "0", css "padding" "0"]
-    (List.map listElement model.copies)
+    (List.map listItem model.copies)
 
-listElement : Data -> Html Msg
-listElement data =
+listItem : Data -> Html Msg
+listItem data =
   let prettyType = lookup prettyTypes data.eventType data.eventType
       iconName = lookup iconNames data.eventType "motorcycle"
   in
