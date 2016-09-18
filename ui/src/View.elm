@@ -5,8 +5,10 @@ import Types exposing (Data)
 import Bootstrap.Html exposing (..)
 import Html exposing (..)
 import Html.Attributes as A exposing (style, class)
-import Html.Shorthand exposing (..)
+-- import Html.Shorthand exposing (..)
 
+import Material.List as Lists
+-- import Material.Icon as Icon
 import Material.Progress as Progress
 import Material.Scheme
 import Material.Button as Button
@@ -27,13 +29,18 @@ styleTypes = [("addormod", Styles.addormod), ("delete", Styles.delete)]
 classTypes : List (String, String)
 classTypes = [("addormod", "success"), ("delete", "danger")]
 
+iconNames : List (String, String)
+iconNames = [("addormod", "note_add"), ("delete", "delete")]
+
 view : Model -> Html Msg
 view model =
-    container_
-        [ Styles.stylesheet "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
-        , row_ [header]
-        , row_ [fetch model]
-        , row_ [(body model)]]
+  container_
+      [ Styles.stylesheet "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+      , row_ [header]
+      , row_ [fetch model]
+      , (body model)]
+
+  |> Material.Scheme.top
 
 header : Html Msg
 header =
@@ -48,20 +55,27 @@ fetch model =
         , makeBusyButton model model.fetching 0 Model.Get "Get Events"
         ]
 
-    |> Material.Scheme.top
-
 body : Model -> Html Msg
 body model =
-    table
-        [ A.class "table col-xs-10 table-hover table-striped" ]
-        [ thead_
-              [ tr_
-                    [ th [A.class "col-xs-2"] [text "Event"]
-                    , th_ [text "File"]
-                    ]
-              ]
-              , tbody_ (List.map renderCopy model.copies)
-        ]
+  Lists.ul
+    [ css "margin" "0", css "padding" "0"]
+    (List.map listElement model.copies)
+
+listElement : Data -> Html Msg
+listElement data =
+  let prettyType = lookup prettyTypes data.eventType data.eventType
+      iconName = lookup iconNames data.eventType "motorcycle"
+  in
+    Lists.li
+      [ Lists.withSubtitle ]
+      [ Lists.content
+          []
+          [ Lists.icon
+              iconName []
+          ,   text prettyType
+          ,   Lists.subtitle [] [ text data.filePath ]
+          ]
+      ]
 
 makeButton : Model -> Int -> Msg -> String -> Html Msg
 makeButton model idx action btnText =
@@ -76,11 +90,3 @@ makeBusyButton model isBusy idx action btnText =
       [makeButton model idx action btnText]
       (if isBusy then [ Progress.indeterminate ] else [])
     )
-
-renderCopy : Data -> Html Msg
-renderCopy copy =
-  let eventStyle = (lookup styleTypes copy.eventType Styles.plainEvent)
-  in
-  tr_
-    [ td [style eventStyle] [text (lookup prettyTypes copy.eventType copy.eventType)]
-    , td  [(style Styles.filePath)] [text copy.filePath]]
