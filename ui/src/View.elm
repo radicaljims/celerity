@@ -38,7 +38,7 @@ view model =
       [ Styles.stylesheet "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
       , row_ [header]
       , row_ [fetch model]
-      , (body model)]
+      , row_ [body model]]
 
   |> Material.Scheme.top
 
