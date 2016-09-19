@@ -20,7 +20,7 @@ data FSEvent =
 
 
 data Directory =
-  Directory {directoryPath :: String}
+  Directory {directoryPath :: String, shortName :: String, usedSpace :: Int}
   deriving (Eq,Show,Generic)
 
 data FileContent =
@@ -30,6 +30,9 @@ data FileContent =
 -- https://gist.github.com/roman/1252086/432097a8a2f519bcf861578818b8096f60d22626
 genWord :: Gen String
 genWord = listOf1 (choose ('a', 'z'))
+
+genName :: Gen String
+genName = resize 8 (listOf1 (choose ('a', 'z')))
 
 genPath :: Gen String
 genPath = resize 10 (intercalate "/" <$> listOf genWord)
@@ -50,7 +53,9 @@ instance ToJSON Directory
 instance Arbitrary Directory where
   arbitrary = do
     path <- genPath
-    return (Directory path)
+    shortName <- genName
+    usedSpace <- choose (10000 :: Int, 1000000)
+    return (Directory path shortName usedSpace)
 
 instance ToJSON FileContent
 instance Arbitrary FileContent where
@@ -67,7 +72,7 @@ fsevents2 =
   ,FSEvent "delete" "/tmp/good.bye" (getOffsetTime 10000)]
 
 directory1 :: [Directory]
-directory1 = [Directory "/home/jims"]
+directory1 = [Directory "/home/jims" "jims" 10000]
 
 content1 :: FileContent
 content1 = FileContent "content"

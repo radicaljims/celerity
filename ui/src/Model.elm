@@ -4,7 +4,7 @@ import Material
 import Comms exposing (fetchCopies, fetchDirectories)
 import Types exposing (Data, Directory)
 
-type Tab = Events | Directories
+type Tab = Events | Directories | Alerts
 
 type alias Model =
     { copies : List Data
@@ -13,12 +13,14 @@ type alias Model =
     , fetching : Bool
     , activeTab : Tab
     , directories : List Directory
+    , raised : Int -- getting annoyed at all the UI state here
     }
 
 emptyModel : Model
 emptyModel =  { copies = [], message = "" , mdl = Material.model
               , fetching = False, directories = []
-              , activeTab = Events
+              , activeTab = Directories
+              , raised = -1
               }
 
 init : (Model, Cmd a)
@@ -27,6 +29,7 @@ init = emptyModel ! []
 type Msg =  NoOp | GetCopies | GetCopiesSuccess (List Data) | GetCopiesFailure String
            | ActiveTab Int
            | GetDirectories | GetDirectoriesSuccess (List Directory) | GetDirectoriesFailure String
+           | Raise Int
            | Mdl (Material.Msg Msg)
 
 update : Msg -> Model -> (Model, Cmd Msg)
@@ -53,9 +56,12 @@ update comm model =
           { model | message = error, fetching = False } ! []
 
       ActiveTab t ->
-          let intToTab n = if n == 0 then Events else Directories
+          let intToTab n = if n == 1 then Events else if n ==2 then Alerts else Directories
           in
             { model | activeTab = intToTab t} ! []
+
+      Raise k ->
+          { model | raised = k } ! []
 
       Mdl msg' ->
           Material.update msg' model

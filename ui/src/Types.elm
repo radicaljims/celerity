@@ -23,13 +23,17 @@ copyListDecoder : Json.Decoder (List Data)
 copyListDecoder = Json.list dataDecoder
 
 type alias Directory =
-  { directoryPath : String }
+  { directoryPath : String
+  , shortName : String
+  , usedSpace : Int }
 
 directoryDecoder : Json.Decoder Directory
 directoryDecoder =
-  Json.object1
+  Json.object3
     Directory
       ("directoryPath" := Json.string)
+      ("shortName" := Json.string)
+      ("usedSpace" := Json.int)
 
 directoryListDecoder : Json.Decoder (List Directory)
 directoryListDecoder = Json.list directoryDecoder
