@@ -7,8 +7,9 @@ import Html exposing (..)
 import Html.Attributes as A exposing (style, class)
 -- import Html.Shorthand exposing (..)
 
+import Material.Color as Color
+import Material.Layout as Layout
 import Material.List as Lists
--- import Material.Icon as Icon
 import Material.Progress as Progress
 import Material.Scheme
 import Material.Button as Button
@@ -32,28 +33,31 @@ classTypes = [("addormod", "success"), ("delete", "danger")]
 iconNames : List (String, String)
 iconNames = [("addormod", "note_add"), ("delete", "delete")]
 
+iconHues : List (String, Color.Hue)
+iconHues = [("addormod", Color.LightGreen), ("delete", Color.Teal)]
+
 view : Model -> Html Msg
 view model =
-  container_
-      [ Styles.stylesheet "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
-      , row_ [header]
-      , row_ [fetch model]
-      , row_ [body model]]
+  Layout.render Mdl
+    model.mdl
+      [ Layout.fixedHeader ]
+      { header = [ header ]
+      , drawer = []
+      , tabs = ( [], [] )
+      , main = [fetch model, body model]
+      }
 
-  |> Material.Scheme.top
+  |> Material.Scheme.topWithScheme Color.BlueGrey Color.Indigo
 
 header : Html Msg
 header =
   div
-    [style Styles.header]
-    [ h1 [] [text "Celerity"]]
+    []
+    [ h4 [style Styles.header] [text "Celerity"]]
 
 fetch : Model -> Html Msg
 fetch model =
-    container_
-        [ Styles.stylesheet "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
-        , makeBusyButton model model.fetching 0 Model.Get "Get Events"
-        ]
+    makeBusyButton model model.fetching 0 Model.Get "Get Events"
 
 body : Model -> Html Msg
 body model =
@@ -64,14 +68,14 @@ body model =
 listItem : Data -> Html Msg
 listItem data =
   let prettyType = lookup prettyTypes data.eventType data.eventType
-      iconName = lookup iconNames data.eventType "motorcycle"
+      iconHue = lookup iconHues data.eventType Color.Orange
   in
     Lists.li
       [ Lists.withSubtitle ]
       [ Lists.content
           []
-          [ Lists.icon
-              iconName []
+          [ Lists.avatarIcon
+              "insert_drive_file" [Color.background (Color.color iconHue Color.S500)]
           ,   text prettyType
           ,   Lists.subtitle [] [ text data.filePath ]
           ]
@@ -80,7 +84,7 @@ listItem data =
 makeButton : Model -> Int -> Msg -> String -> Html Msg
 makeButton model idx action btnText =
   Button.render Mdl [idx] model.mdl
-    [ Button.raised, Button.colored, Button.onClick action, css "margin" "0 10px 0 10px"]
+    [ Button.raised, Button.colored, Button.onClick action, css "margin" "10px 10px 10px 10px"]
     [ text btnText ]
 
 makeBusyButton : Model -> Bool -> Int -> Msg -> String -> Html Msg

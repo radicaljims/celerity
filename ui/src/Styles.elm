@@ -43,7 +43,7 @@ header =
   , fontSize (px 20)
   , color (color' white)
   , width (pc 100)
-  , backgroundColor (color' lightOrange)
+  -- , backgroundColor (color' lightOrange)
   ]
 
 body : Styles
