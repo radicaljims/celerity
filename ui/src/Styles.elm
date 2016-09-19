@@ -40,10 +40,9 @@ header =
   [ display flex'
   , paddingLeft (px 10)
   , margin <| (px 20) ++ " " ++ auto
-  , fontSize (px 20)
+  , fontSize (px 30)
   , color (color' white)
   , width (pc 100)
-  -- , backgroundColor (color' lightOrange)
   ]
 
 body : Styles

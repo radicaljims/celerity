@@ -53,7 +53,7 @@ header : Html Msg
 header =
   div
     []
-    [ h4 [style Styles.header] [text "Celerity"]]
+    [ h3 [style Styles.header] [text "Celerity"]]
 
 fetch : Model -> Html Msg
 fetch model =
