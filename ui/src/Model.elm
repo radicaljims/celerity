@@ -14,6 +14,7 @@ type alias Model =
     , activeTab : Tab
     , directories : List Directory
     , raised : Int -- getting annoyed at all the UI state here
+    , showFiles : List Int
     }
 
 emptyModel : Model
@@ -21,6 +22,7 @@ emptyModel =  { copies = [], message = "" , mdl = Material.model
               , fetching = False, directories = []
               , activeTab = Directories
               , raised = -1
+              , showFiles = []
               }
 
 init : (Model, Cmd a)
@@ -30,6 +32,7 @@ type Msg =  NoOp | GetCopies | GetCopiesSuccess (List Data) | GetCopiesFailure S
            | ActiveTab Int
            | GetDirectories | GetDirectoriesSuccess (List Directory) | GetDirectoriesFailure String
            | Raise Int
+           | ToggleFiles Int
            | Mdl (Material.Msg Msg)
 
 update : Msg -> Model -> (Model, Cmd Msg)
@@ -62,6 +65,13 @@ update comm model =
 
       Raise k ->
           { model | raised = k } ! []
+
+      ToggleFiles idx ->
+          let isShowingFiles =
+            List.isEmpty (List.filter (\x -> x == idx) model.showFiles) /= True
+              stopShowing l = List.filter (\x -> x /= idx) l
+          in
+            { model | showFiles = if isShowingFiles then (stopShowing model.showFiles) else (idx :: model.showFiles)} ! []
 
       Mdl msg' ->
           Material.update msg' model

@@ -122,11 +122,24 @@ dynamic k model =
     , Options.attribute <| onMouseLeave (Model.Raise -1)
     ] |> Options.many
 
+cellSize model idx =
+  let isShowingFiles =
+    List.isEmpty (List.filter (\x -> x == idx) model.showFiles) /= True
+  in
+    if isShowingFiles then (size All 5) else (size All 3)
+
+cellCssWidth model idx =
+  let isShowingFiles =
+    List.isEmpty (List.filter (\x -> x == idx) model.showFiles) /= True
+  in
+    if isShowingFiles then (css "width" "512px") else (css "width" "256px")
 card : Model -> Int -> Directory -> Material.Grid.Cell Msg
 card model idx directory =
-    cell [size All 3]
+    -- cell [size All 3]
+    cell [cellSize model idx]
       [ Card.view
-          [ css "width" "256px"
+          -- [ css "width" "256px"
+          [ cellCssWidth model idx
           , css "height" "256px"
           , Color.background (Color.color Color.DeepPurple Color.S400)
           , dynamic idx model
@@ -135,18 +148,8 @@ card model idx directory =
           ]
           [ Card.title
               []
-              -- [ css "align-content" "flex-start"
-              -- , css "flex-direction" "row"
-              -- , css "align-items" "flex-start"
-              -- , css "justify-content" "space-between"
-              -- ]
               [Options.div
                 []
-                -- [ css "align-content" "flex-start"
-                -- , css "flex-direction" "row"
-                -- , css "align-items" "flex-start"
-                -- , css "justify-content" "space-between"
-                -- ]
                 [
                   Icon.view "insert_drive_file" [Icon.size48, white]
                 , Options.div []
@@ -161,13 +164,14 @@ card model idx directory =
               [Card.border, css "vertical-align" "bottom", css "text-align" "right", white
               -- , greyBackground
               ]
-              [Button.render Mdl [3] model.mdl
-                [Button.icon, Button.ripple, white, Tooltip.attach Mdl [0]]
+              [Button.render Mdl [idx + 100] model.mdl
+                [ Button.icon, Button.ripple, white, Tooltip.attach Mdl [0]
+                , Button.onClick (Model.ToggleFiles idx)]
                 [Icon.i "list"]
               , Tooltip.render Mdl [0] model.mdl
                   []
                   [text "View files in directory"]
-              , Button.render Mdl [4] model.mdl
+              , Button.render Mdl [idx + 200] model.mdl
                 [Button.icon, Button.ripple, white, Tooltip.attach Mdl [1]]
                 [Icon.i "delete"]
               , Tooltip.render Mdl [1] model.mdl
