@@ -1,0 +1,199 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "0.1",
+        "title": "Indy API",
+        "description": "Indirecting access to Valhalla"
+    },
+    "definitions": {
+        "FileContent": {
+            "example": {
+                "content": "content!"
+            },
+            "required": [
+                "content"
+            ],
+            "type": "object",
+            "description": "The content of a file backup",
+            "properties": {
+                "content": {
+                    "type": "string"
+                }
+            }
+        },
+        "FSEvent": {
+            "example": {
+                "filePath": "/tmp/hi.there",
+                "eventType": "addormod",
+                "timeStamp": "111000034"
+            },
+            "required": [
+                "eventType",
+                "filePath",
+                "timeStamp"
+            ],
+            "type": "object",
+            "description": "A file system event",
+            "properties": {
+                "filePath": {
+                    "type": "string"
+                },
+                "eventType": {
+                    "type": "string"
+                },
+                "timeStamp": {
+                    "type": "string"
+                }
+            }
+        },
+        "Directory": {
+            "example": {
+                "shortName": "Temp!",
+                "directoryPath": "/tmp/",
+                "usedSpace": 10000
+            },
+            "required": [
+                "directoryPath",
+                "shortName",
+                "usedSpace"
+            ],
+            "type": "object",
+            "description": "A watched directory",
+            "properties": {
+                "shortName": {
+                    "type": "string"
+                },
+                "directoryPath": {
+                    "type": "string"
+                },
+                "usedSpace": {
+                    "maximum": 9223372036854775807,
+                    "minimum": -9223372036854775808,
+                    "type": "integer"
+                }
+            }
+        }
+    },
+    "paths": {
+        "/directories": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "items": {
+                                "$ref": "#/definitions/Directory"
+                            },
+                            "type": "array"
+                        },
+                        "description": ""
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/history/{path}": {
+            "get": {
+                "responses": {
+                    "404": {
+                        "description": "`path` not found"
+                    },
+                    "200": {
+                        "schema": {
+                            "items": {
+                                "$ref": "#/definitions/FSEvent"
+                            },
+                            "type": "array"
+                        },
+                        "description": ""
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "required": true,
+                        "in": "path",
+                        "name": "path",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/content/{path}": {
+            "get": {
+                "responses": {
+                    "404": {
+                        "description": "`path` not found"
+                    },
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/FileContent"
+                        },
+                        "description": ""
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "required": true,
+                        "in": "path",
+                        "name": "path",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        "/fsevents": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "items": {
+                                "$ref": "#/definitions/FSEvent"
+                            },
+                            "type": "array"
+                        },
+                        "description": ""
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ]
+            }
+        },
+        "/status/{directory}": {
+            "get": {
+                "responses": {
+                    "404": {
+                        "description": "`directory` not found"
+                    },
+                    "200": {
+                        "schema": {
+                            "items": {
+                                "$ref": "#/definitions/FSEvent"
+                            },
+                            "type": "array"
+                        },
+                        "description": ""
+                    }
+                },
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "required": true,
+                        "in": "path",
+                        "name": "directory",
+                        "type": "string"
+                    }
+                ]
+            }
+        }
+    }
+}

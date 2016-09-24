@@ -21,6 +21,6 @@ extra-deps:
 - servant-js-0.8.1
 - servant-mock-0.8.1
 - servant-server-0.8.1
-- servant-swagger-0.8.1
+- servant-swagger-1.0.3
 - servant-foreign-0.8.1
 resolver: lts-6.17
