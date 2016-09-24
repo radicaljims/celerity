@@ -11,6 +11,8 @@ import           Test.QuickCheck           (Gen, choose, elements, listOf,
                                             listOf1, resize)
 import           Test.QuickCheck.Arbitrary
 
+import           Servant.Elm  (ElmType)
+
 data FSEvent =
   FSEvent { eventType :: String
           , filePath  :: String
@@ -26,6 +28,10 @@ data Directory =
 data FileContent =
   FileContent {content :: String}
   deriving (Eq,Show,Generic)
+
+instance ElmType FSEvent
+instance ElmType Directory
+instance ElmType FileContent
 
 -- https://gist.github.com/roman/1252086/432097a8a2f519bcf861578818b8096f60d22626
 genWord :: Gen String

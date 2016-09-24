@@ -8,18 +8,19 @@ packages:
   extra-dep: true
 - location:
     git: https://www.github.com/mattjbray/elm-export
-    commit: a8a5b61798fbb04e081f5c83cab76ceaabc5ba13
+    commit: 8868c1f09597f44c2e18e014cd9fbcf8320c3fea
   extra-dep: True
 - location:
     git: https://www.github.com/mattjbray/servant-elm
-    commit: 749e09ed9d623284b3b90d1ae1ccba7ae79ad381
+    commit: 58ce4226b85b2c07ecfdb761d9b4eca33f6654a5
   extra-dep: True
 extra-deps:
-- servant-0.8
-- servant-client-0.8
-- servant-docs-0.8
-- servant-js-0.8
-- servant-mock-0.8
-- servant-server-0.8
-- servant-swagger-0.8
-resolver: lts-6.11
+- servant-0.8.1
+- servant-client-0.8.1
+- servant-docs-0.8.1
+- servant-js-0.8.1
+- servant-mock-0.8.1
+- servant-server-0.8.1
+- servant-swagger-0.8.1
+- servant-foreign-0.8.1
+resolver: lts-6.17
