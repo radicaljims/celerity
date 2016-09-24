@@ -123,22 +123,36 @@ dynamic k model =
     ] |> Options.many
 
 cellSize model idx =
-  let isShowingFiles =
-    List.isEmpty (List.filter (\x -> x == idx) model.showFiles) /= True
-  in
-    if isShowingFiles then (size All 5) else (size All 3)
+    if (Model.isShowingFiles model idx) then (size All 5) else (size All 3)
 
 cellCssWidth model idx =
-  let isShowingFiles =
-    List.isEmpty (List.filter (\x -> x == idx) model.showFiles) /= True
-  in
-    if isShowingFiles then (css "width" "512px") else (css "width" "256px")
+    if (Model.isShowingFiles model idx) then (css "width" "512px") else (css "width" "256px")
+
+expander = Card.text [Card.expand] []
+
+cardViewTop model idx directory =
+  [ Card.title
+      []
+      [Options.div
+        []
+        [
+          Icon.view "insert_drive_file" [Icon.size48, white]
+        , Options.div []
+            [ Card.head [ white ] [ text directory.shortName]
+            , Card.subhead [ white ] [ text ((toString directory.usedSpace) ++ " Bytes") ]
+            ]
+        ]
+      ]
+  , expander
+  ]
+
 card : Model -> Int -> Directory -> Material.Grid.Cell Msg
 card model idx directory =
-    -- cell [size All 3]
+    let cardView = if (Model.isShowingFiles model idx) == False then (cardViewTop model idx directory)
+                   else [expander]
+    in
     cell [cellSize model idx]
       [ Card.view
-          -- [ css "width" "256px"
           [ cellCssWidth model idx
           , css "height" "256px"
           , Color.background (Color.color Color.DeepPurple Color.S400)
@@ -146,22 +160,9 @@ card model idx directory =
           , css "margin" "10px"
           , css "padding" "10px"
           ]
-          [ Card.title
-              []
-              [Options.div
-                []
-                [
-                  Icon.view "insert_drive_file" [Icon.size48, white]
-                , Options.div []
-                    [ Card.head [ white ] [ text directory.shortName]
-                    , Card.subhead [ white ] [ text ((toString directory.usedSpace) ++ " Bytes") ]
-                    ]
-                ]
-              ]
-          , Card.text [Card.expand] -- an expander
-              []
-          , Card.actions
-              [Card.border, css "vertical-align" "bottom", css "text-align" "right", white
+          (append cardView
+          [Card.actions
+              [Card.border, css "vertical-align" "bottom", css "text-align" "left", white
               -- , greyBackground
               ]
               [Button.render Mdl [idx + 100] model.mdl
@@ -178,7 +179,7 @@ card model idx directory =
                   []
                   [text "Delete directory"]
               ]
-          ]
+          ])
       ]
 
 makeButton : Model -> Int -> Msg -> String -> Html Msg

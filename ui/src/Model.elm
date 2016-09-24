@@ -35,6 +35,10 @@ type Msg =  NoOp | GetCopies | GetCopiesSuccess (List Data) | GetCopiesFailure S
            | ToggleFiles Int
            | Mdl (Material.Msg Msg)
 
+isShowingFiles : Model -> Int -> Bool
+isShowingFiles model idx =
+    List.isEmpty (List.filter (\x -> x == idx) model.showFiles) /= True
+
 update : Msg -> Model -> (Model, Cmd Msg)
 update comm model =
   case comm of
@@ -67,11 +71,10 @@ update comm model =
           { model | raised = k } ! []
 
       ToggleFiles idx ->
-          let isShowingFiles =
-            List.isEmpty (List.filter (\x -> x == idx) model.showFiles) /= True
-              stopShowing l = List.filter (\x -> x /= idx) l
+          let stopShowing model idx = List.filter (\x -> x /= idx) model.showFiles
           in
-            { model | showFiles = if isShowingFiles then (stopShowing model.showFiles) else (idx :: model.showFiles)} ! []
+            { model | showFiles = if (isShowingFiles model idx)
+                                  then (stopShowing model idx) else (idx :: model.showFiles)} ! []
 
       Mdl msg' ->
           Material.update msg' model
