@@ -4,7 +4,8 @@
     "license": "MIT",
     "repository": "https://github.com/radicaljims/celerity.git",
     "source-directories": [
-        "src"
+        "src",
+        "src/EventPage"
     ],
     "exposed-modules": [],
     "dependencies": {

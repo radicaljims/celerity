@@ -2,38 +2,42 @@ module Model exposing (..)
 
 import Material
 import Comms exposing (fetchCopies, fetchDirectories)
-import Types exposing (Data, Directory)
+import Types exposing (Directory)
+
+import EventModel
 
 type Tab = Events | Directories | Alerts
 
 type alias Model =
-    { copies : List Data
-    , message : String
+    { message : String
     , mdl : Material.Model
     , fetching : Bool
     , activeTab : Tab
     , directories : List Directory
     , raised : Int -- getting annoyed at all the UI state here
     , showFiles : List Int
+    , eventModel : EventModel.Model
     }
 
 emptyModel : Model
-emptyModel =  { copies = [], message = "" , mdl = Material.model
+emptyModel =  { message = "" , mdl = Material.model
               , fetching = False, directories = []
               , activeTab = Directories
               , raised = -1
               , showFiles = []
+              , eventModel = EventModel.emptyModel
               }
 
 init : (Model, Cmd a)
 init = emptyModel ! []
 
-type Msg =  NoOp | GetCopies | GetCopiesSuccess (List Data) | GetCopiesFailure String
+type Msg =  NoOp
            | ActiveTab Int
            | GetDirectories | GetDirectoriesSuccess (List Directory) | GetDirectoriesFailure String
            | Raise Int
            | ToggleFiles Int
            | Mdl (Material.Msg Msg)
+           | EM (EventModel.Msg)
 
 isShowingFiles : Model -> Int -> Bool
 isShowingFiles model idx =
@@ -43,15 +47,6 @@ update : Msg -> Model -> (Model, Cmd Msg)
 update comm model =
   case comm of
       NoOp -> model ! []
-
-      GetCopies ->
-          { model | message = "Fetching copies...", fetching = True } ! [fetchCopies GetCopiesSuccess GetCopiesFailure]
-
-      GetCopiesSuccess copies ->
-          { model | message = "Fetched copies", copies = copies, fetching = False} ! []
-
-      GetCopiesFailure error ->
-          { model | message = error, fetching = False } ! []
 
       GetDirectories ->
           { model | message = "Fetching directories...", fetching = True } ! [fetchDirectories GetDirectoriesSuccess GetDirectoriesFailure]
@@ -72,11 +67,21 @@ update comm model =
 
       ToggleFiles idx ->
           let stopShowing model idx = List.filter (\x -> x /= idx) model.showFiles
+              action = \_ -> []
+              -- action = if (isShowingFiles model idx) == False then (\_ -> [fetchCopies GetCopiesSuccess GetCopiesFailure]) else
+              --              (\_ -> [])
           in
             { model | showFiles = if (isShowingFiles model idx)
-                                  then (stopShowing model idx) else (idx :: model.showFiles)} ! []
+                                  then (stopShowing model idx) else (idx :: model.showFiles)} ! action()
 
       Mdl msg' ->
           Material.update msg' model
+
+      EM massage ->
+        let
+            ( updatedEventModel, cmd) =
+                EventModel.update massage model.eventModel
+        in
+            ( { model | eventModel = updatedEventModel }, Cmd.map EM cmd)
 
 type alias Mdl = Material.Model
