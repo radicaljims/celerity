@@ -1,4 +1,4 @@
-module Styles exposing (..)
+module DirectoryStyles exposing (..)
 
 import Color exposing (..)
 -- reference: http://package.elm-lang.org/packages/elm-lang/core/4.0.3/Color

@@ -15,15 +15,20 @@ type alias Model =
     }
 
 emptyModel : Model
-emptyModel =  { copies = [], message = "" , mdl = Material.model
+emptyModel =  { copies = []
+              , message = ""
+              , mdl = Material.model
               , fetching = False
               }
 
 init : (Model, Cmd a)
 init = emptyModel ! []
 
-type Msg =  NoOp | GetCopies | GetCopiesSuccess (List Data) | GetCopiesFailure String
-           | Mdl (Material.Msg Msg)
+type Msg =  NoOp
+         | GetCopies
+         | GetCopiesSuccess (List Data)
+         | GetCopiesFailure String
+         | Mdl (Material.Msg Msg)
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update comm model =

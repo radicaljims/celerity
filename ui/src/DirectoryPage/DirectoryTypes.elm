@@ -1,4 +1,4 @@
-module Types exposing (..)
+module DirectoryTypes exposing (..)
 
 import Json.Decode as Json exposing (..)
 import Time exposing (Time)

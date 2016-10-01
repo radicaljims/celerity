@@ -5,7 +5,8 @@
     "repository": "https://github.com/radicaljims/celerity.git",
     "source-directories": [
         "src",
-        "src/EventPage"
+        "src/EventPage",
+        "src/DirectoryPage"
     ],
     "exposed-modules": [],
     "dependencies": {

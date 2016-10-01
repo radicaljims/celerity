@@ -4,7 +4,7 @@ import EventTypes exposing (Data)
 
 import Bootstrap.Html exposing (..)
 import Html exposing (..)
-import Html.Attributes as A exposing (style, class)
+-- import Html.Attributes as A exposing (style, class)
 import Html.Events exposing (onClick, onMouseEnter, onMouseLeave)
 
 import Material.Elevation as Elevation
