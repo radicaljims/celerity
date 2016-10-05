@@ -2,12 +2,15 @@ module View exposing (..)
 
 import Html exposing (..)
 import Html.App exposing (map)
+import Html.Attributes as A exposing (style)
 
 import Material.Color as Color
 import Material.Layout as Layout
 import Material.Scheme
 
 import EventView
+import EventStyles
+
 import DirectoryView
 
 import Model exposing (Msg, Model, Mdl)
@@ -33,8 +36,7 @@ header : Html Msg
 header =
   div
     []
-    -- [ h3 [style Styles.header] [text "Celerity"]]
-    [ h3 [] [text "Celerity"]]
+    [ h3 [style EventStyles.header] [text "Celerity"]]
 
 body : Model -> Html Msg
 body model =
@@ -45,9 +47,6 @@ body model =
 
     Model.Events ->
         Html.App.map Model.EM (EventView.view model.eventModel)
-        -- EventView.view model
 
     Model.Alerts ->
         text "No alerts yet buddy!"
-
-

@@ -30,13 +30,17 @@ type Msg =  NoOp
          | GetCopiesFailure String
          | Mdl (Material.Msg Msg)
 
+
+getEvents : Cmd Msg
+getEvents = fetchCopies GetCopiesSuccess GetCopiesFailure
+
 update : Msg -> Model -> (Model, Cmd Msg)
 update comm model =
   case comm of
       NoOp -> model ! []
 
       GetCopies ->
-          { model | message = "Fetching copies...", fetching = True } ! [fetchCopies GetCopiesSuccess GetCopiesFailure]
+          { model | message = "Fetching copies...", fetching = True } ! [getEvents]
 
       GetCopiesSuccess copies ->
           { model | message = "Fetched copies", copies = copies, fetching = False} ! []

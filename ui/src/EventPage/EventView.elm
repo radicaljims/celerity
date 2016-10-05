@@ -42,29 +42,6 @@ iconNames = [("addormod", "note_add"), ("delete", "delete")]
 iconColors : List (String, Color.Color)
 iconColors = [("addormod", Color.color Color.BlueGrey Color.S300), ("delete", Color.color Color.Yellow Color.S800)]
 
--- view : Model -> Html Msg
--- view model =
---   Layout.render Mdl
---     model.mdl
---       [ Layout.waterfall True
---       , Layout.fixedHeader
---       , Layout.rippleTabs
---       , Layout.onSelectTab Model.ActiveTab
---       ]
---       { header = [ header ]
---       , drawer = []
---       , tabs = ( [text "Directories", text "Event Log", text "Alerts"], [] )
---       , main = [body model]
---       }
-
---   |> Material.Scheme.topWithScheme Color.BlueGrey Color.Indigo
-
--- header : Html Msg
--- header =
---   div
---     []
---     [ h3 [style Styles.header] [text "Celerity"]]
-
 fetch : Model -> Int -> Msg -> String -> Html Msg
 fetch model idx action buttonText  =
   makeBusyButton model model.fetching idx action buttonText
@@ -78,9 +55,10 @@ eventList model =
 view : Model -> Html Msg
 view model =
   div []
-    [ fetch model 0 Model.GetCopies "Get Events"
-    , eventList model
-    ]
+      [ eventList model ]
+    -- [ fetch model 0 Model.GetCopies "Get Events"
+    -- , eventList model
+    -- ]
 
 listItem : Data -> Html Msg
 listItem data =

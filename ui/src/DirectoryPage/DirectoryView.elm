@@ -29,10 +29,7 @@ import DirectoryStyles as Styles
 view : Model -> Html Msg
 view model =
   div []
-    (append
-    [ fetch model 1 Model.GetDirectories "Get Directories" ]
     [ grid [] (List.indexedMap (card model) model.directories) ]
-    )
 
 white : Options.Property c m
 white = Color.text Color.white
