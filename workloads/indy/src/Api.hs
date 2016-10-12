@@ -12,8 +12,8 @@ import Types
 type SwaggerAPI = "swagger.json" :> Get '[JSON] Swagger
 
 type IndyAPI = "fsevents" :> Get '[JSON] [FSEvent]
-  :<|> "directories" :> Get '[JSON] [Directory]
-  :<|> "status" :> Capture "directory" String :> Get '[JSON] [FSEvent]
+  :<|> "directories" :> Get '[JSON] [WatchedDirectory]
+  :<|> "status" :> Capture "directory" String :> Get '[JSON] FileSystem
   :<|> "history" :> Capture "path" String :> Get '[JSON] [FSEvent]
   :<|> "content" :> Capture "path" String :> Get '[JSON] FileContent
 

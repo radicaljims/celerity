@@ -10,8 +10,8 @@ import Types
 -- indyServer doesn't contain the swagger stuff
 indyServer :: Server IndyAPI
 indyServer = (return fsevents1) :<|> (return directory1) :<|> status :<|> history :<|> content
-  where status :: String -> Handler [FSEvent]
-        status _ = return fsevents2
+  where status :: String -> Handler FileSystem
+        status _ = return status1
 
         history :: String -> Handler [FSEvent]
         history _ = return fsevents2
