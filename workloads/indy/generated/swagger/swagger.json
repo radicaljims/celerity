@@ -21,6 +21,26 @@
                 }
             }
         },
+        "FileSystem": {
+            "example": {
+                "files": [
+                    "hi.png"
+                ]
+            },
+            "required": [
+                "files"
+            ],
+            "type": "object",
+            "description": "The files in a watched directory",
+            "properties": {
+                "files": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                }
+            }
+        },
         "FSEvent": {
             "example": {
                 "filePath": "/tmp/hi.there",
@@ -46,7 +66,7 @@
                 }
             }
         },
-        "Directory": {
+        "WatchedDirectory": {
             "example": {
                 "shortName": "Temp!",
                 "directoryPath": "/tmp/",
@@ -81,7 +101,7 @@
                     "200": {
                         "schema": {
                             "items": {
-                                "$ref": "#/definitions/Directory"
+                                "$ref": "#/definitions/WatchedDirectory"
                             },
                             "type": "array"
                         },
@@ -174,10 +194,7 @@
                     },
                     "200": {
                         "schema": {
-                            "items": {
-                                "$ref": "#/definitions/FSEvent"
-                            },
-                            "type": "array"
+                            "$ref": "#/definitions/FileSystem"
                         },
                         "description": ""
                     }

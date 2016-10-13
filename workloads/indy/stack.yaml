@@ -7,8 +7,8 @@ packages:
     commit: 343f55f61a98900410b2e97cc7cea6dee25b5eb7
   extra-dep: true
 - location:
-    git: https://www.github.com/mattjbray/elm-export
-    commit: 8868c1f09597f44c2e18e014cd9fbcf8320c3fea
+    git: https://www.github.com/jcberentsen/elm-export
+    commit: 894649652bd8c467b77ce761ba55627700736ab3
   extra-dep: True
 - location:
     git: https://www.github.com/mattjbray/servant-elm

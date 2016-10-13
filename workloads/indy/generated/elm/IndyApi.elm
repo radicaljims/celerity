@@ -1,4 +1,4 @@
-module elm.IndyApi where
+module IndyApi exposing (..)
 
 import Json.Decode exposing ((:=))
 import Json.Decode.Extra exposing ((|:))
@@ -39,20 +39,20 @@ getFsevents =
       (Json.Decode.list decodeFSEvent)
       (Http.send Http.defaultSettings request)
 
-type alias Directory =
+type alias WatchedDirectory =
   { directoryPath : String
   , shortName : String
   , usedSpace : Int
   }
 
-decodeDirectory : Json.Decode.Decoder Directory
-decodeDirectory =
-  Json.Decode.succeed Directory
+decodeWatchedDirectory : Json.Decode.Decoder WatchedDirectory
+decodeWatchedDirectory =
+  Json.Decode.succeed WatchedDirectory
     |: ("directoryPath" := Json.Decode.string)
     |: ("shortName" := Json.Decode.string)
     |: ("usedSpace" := Json.Decode.int)
 
-getDirectories : Task.Task Http.Error (List (Directory))
+getDirectories : Task.Task Http.Error (List (WatchedDirectory))
 getDirectories =
   let
     request =
@@ -67,10 +67,19 @@ getDirectories =
       }
   in
     Http.fromJson
-      (Json.Decode.list decodeDirectory)
+      (Json.Decode.list decodeWatchedDirectory)
       (Http.send Http.defaultSettings request)
 
-getStatusByDirectory : String -> Task.Task Http.Error (List (FSEvent))
+type alias FileSystem =
+  { files : List (String)
+  }
+
+decodeFileSystem : Json.Decode.Decoder FileSystem
+decodeFileSystem =
+  Json.Decode.succeed FileSystem
+    |: ("files" := Json.Decode.list Json.Decode.string)
+
+getStatusByDirectory : String -> Task.Task Http.Error (FileSystem)
 getStatusByDirectory directory =
   let
     request =
@@ -86,7 +95,7 @@ getStatusByDirectory directory =
       }
   in
     Http.fromJson
-      (Json.Decode.list decodeFSEvent)
+      decodeFileSystem
       (Http.send Http.defaultSettings request)
 
 getHistoryByPath : String -> Task.Task Http.Error (List (FSEvent))

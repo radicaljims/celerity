@@ -12,9 +12,9 @@ import Api
 import Types
 
 spec :: Spec
-spec = Spec ["elm", "IndyApi"]
+spec = Spec ["IndyApi"]
             (defElmImports
              : generateElmForAPI (Proxy :: Proxy IndyAPI))
 
 main :: IO ()
-main = specsToDir [spec] "generated"
+main = specsToDir [spec] "generated/elm"
