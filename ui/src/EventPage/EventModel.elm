@@ -5,48 +5,65 @@ import Material
 import EventComms exposing (fetchCopies)
 import EventTypes exposing (Data)
 
--- type Tab = Events | Directories | Alerts
+import Models.Comms as Comm
 
-type alias Model =
-    { copies : List Data
-    , message : String
-    , mdl : Material.Model
-    , fetching : Bool
-    }
+-- Adds a 'Material.Model' to 'm'
+type alias MdlModel m =
+  { m | mdl : Material.Model }
+
+type alias MdlMessage m = Material.Msg m
+
+-- The empty record, wellspring of them all
+type alias Empty = {}
+
+type alias Model = MdlModel (Comm.Model (List Data) Empty)
 
 emptyModel : Model
-emptyModel =  { copies = []
-              , message = ""
-              , mdl = Material.model
-              , fetching = False
-              }
+emptyModel =
+  { data = []
+  , message  = ""
+  , fetching = False
+  , mdl = Material.model }
 
 init : (Model, Cmd a)
 init = emptyModel ! []
 
 type Msg =  NoOp
-         | GetCopies
-         | GetCopiesSuccess (List Data)
-         | GetCopiesFailure String
-         | Mdl (Material.Msg Msg)
+         | Comms (Comm.Msg (List Data))
+         | Mdl (MdlMessage Msg)
 
+getEvents : Cmd (Comm.Msg (List Data))
+getEvents = fetchCopies Comm.GetDataSuccess Comm.GetDataFailure
 
-getEvents : Cmd Msg
-getEvents = fetchCopies GetCopiesSuccess GetCopiesFailure
+foo msg model cmd u t =
+    let
+        (model', cmd) = u msg model cmd
+    in
+        (model', Cmd.map t cmd)
+
+-- updater, action, resultor
+foo2 u a r =
+    let
+        (model', cmd) = u a
+    in
+        (model', r cmd)
 
 update : Msg -> Model -> (Model, Cmd Msg)
-update comm model =
-  case comm of
+update msg model =
+  case msg of
       NoOp -> model ! []
 
-      GetCopies ->
-          { model | message = "Fetching copies...", fetching = True } ! [getEvents]
-
-      GetCopiesSuccess copies ->
-          { model | message = "Fetched copies", copies = copies, fetching = False} ! []
-
-      GetCopiesFailure error ->
-          { model | message = error, fetching = False } ! []
+      Comms msg' ->
+          let
+              u = (Comm.update msg' model)
+              r = (Cmd.map Comms)
+          in
+              foo2 u getEvents r
+          -- foo msg' model getEvents (Comm.update) Comms
+          -- let
+          --   (model', cmd) = Comm.update msg' model getEvents
+          -- in
+          --   (model', Cmd.map Comms cmd)
 
       Mdl msg' ->
           Material.update msg' model

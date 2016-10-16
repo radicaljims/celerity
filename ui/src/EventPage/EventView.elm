@@ -50,7 +50,7 @@ eventList : Model -> Html Msg
 eventList model =
   Lists.ul
       [ css "margin" "0", css "padding" "0"]
-      (List.map listItem model.copies)
+      (List.map listItem model.data)
 
 view : Model -> Html Msg
 view model =

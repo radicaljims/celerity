@@ -42,7 +42,8 @@ update comm model =
     ActiveTab t ->
       let
         intToTab n = if n == 1 then Events else if n == 2 then Alerts else Directories
-        dator n = if n == 1 then (Cmd.map EM getEvents) else if n == 2 then Cmd.none else (Cmd.map DM getDirectories)
+        -- TODO: find a better solution to this Cmd.map composition
+        dator n = if n == 1 then (Cmd.map EM (Cmd.map EventModel.Comms getEvents)) else if n == 2 then Cmd.none else (Cmd.map DM getDirectories)
       in
         { model | activeTab = intToTab t} ! [dator t]
 

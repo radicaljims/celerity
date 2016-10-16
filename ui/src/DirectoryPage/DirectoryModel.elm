@@ -41,6 +41,8 @@ type Msg =  NoOp
 getDirectories : Cmd Msg
 getDirectories = fetchDirectories GetDirectoriesSuccess GetDirectoriesFailure
 
+isShowingFiles m idx = Dict.member idx m.events
+
 update : Msg -> Model -> (Model, Cmd Msg)
 update comm model =
   case comm of

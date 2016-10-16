@@ -4,7 +4,7 @@ import DirectoryTypes exposing (Directory)
 
 import Bootstrap.Html exposing (..)
 import Html exposing (..)
-import Html.Attributes as A exposing (style, class)
+-- import Html.Attributes as A exposing (style, class)
 import Html.Events exposing (onClick, onMouseEnter, onMouseLeave)
 
 import Material.Elevation as Elevation
@@ -12,19 +12,19 @@ import Material.Grid exposing (grid, cell, size, Device(..))
 import Material.Card as Card
 import Material.Color as Color
 import Material.Icon as Icon
-import Material.Layout as Layout
-import Material.List as Lists
+-- import Material.Layout as Layout
+-- import Material.List as Lists
 import Material.Progress as Progress
-import Material.Scheme
+-- import Material.Scheme
 import Material.Button as Button
 import Material.Options as Options exposing (css, span)
 import Material.Tooltip as Tooltip
-import Material.Typography as Typography
+-- import Material.Typography as Typography
 
 import List exposing (..)
 
 import DirectoryModel as Model exposing (Msg, Model, Mdl)
-import DirectoryStyles as Styles
+-- import DirectoryStyles as Styles
 
 view : Model -> Html Msg
 view model =

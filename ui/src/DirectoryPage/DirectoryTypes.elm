@@ -1,7 +1,7 @@
 module DirectoryTypes exposing (..)
 
 import Json.Decode as Json exposing (..)
-import Time exposing (Time)
+-- import Time exposing (Time)
 
 type alias Id = Int
 
