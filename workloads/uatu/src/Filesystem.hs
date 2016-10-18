@@ -38,8 +38,8 @@ copyToShare path = do
     shareprefix = (fromString "/Users/jims/share")
     -- this lovely bit has the effect of stripping off the 'drive' and the file parts of filepath,
     -- relativizing the directory and letting us move it under our share
-    directorypath = shareprefix </> (foldr (</>) OS.empty (tail $ init $ splitDirectories $ directory filepath))
-    sharepath = (shareprefix </> directorypath </> (fromString timestamp) </> name)
+    directorypath = shareprefix </> (foldr (</>) OS.empty (tail $ init $ splitDirectories $ directory filepath)) </> (fromString timestamp)
+    sharepath = (shareprefix </> directorypath </> name)
     in
       do
         mktree directorypath
