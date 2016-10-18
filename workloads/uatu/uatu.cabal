@@ -25,6 +25,7 @@ library
                      , system-filepath
                      , template-haskell
                      , text
+                     , time
                      , twitch
                      , turtle
                      , wreq
