@@ -1,6 +1,7 @@
 module DirectoryView exposing (..)
 
-import DirectoryTypes exposing (Directory)
+-- import DirectoryTypes exposing (Directory)
+import IndyApi exposing (WatchedDirectory)
 
 import Bootstrap.Html exposing (..)
 import Html exposing (..)
@@ -13,15 +14,16 @@ import Material.Card as Card
 import Material.Color as Color
 import Material.Icon as Icon
 -- import Material.Layout as Layout
--- import Material.List as Lists
+import Material.List as Lists
 import Material.Progress as Progress
 -- import Material.Scheme
 import Material.Button as Button
 import Material.Options as Options exposing (css, span)
 import Material.Tooltip as Tooltip
--- import Material.Typography as Typography
+import Material.Typography as Typography
 
 import List exposing (..)
+import Dict exposing (get)
 
 import DirectoryModel as Model exposing (Msg, Model, Mdl)
 -- import DirectoryStyles as Styles
@@ -33,6 +35,9 @@ view model =
 
 white : Options.Property c m
 white = Color.text Color.white
+
+blueGreyBG : Options.Property c m
+blueGreyBG = Color.text (Color.color Color.BlueGrey Color.S300)
 
 greyBackground : Options.Property c m
 greyBackground = Color.background (Color.color Color.Grey Color.S400)
@@ -72,14 +77,31 @@ cardViewTop model idx directory =
 cardViewFiles model idx directory =
   [ Card.title
       []
-      []
-      -- [
-      --   Options.div [css "height" "256px", css "margin" "1px", css "width" "475px", css "overflow" "auto"] [eventList model]
-      -- ]
+      [
+        Options.div [css "height" "350px", css "margin" "1px", css "width" "475px", css "overflow" "auto"] [eventList (Dict.get idx model.events)]
+      ]
   , expander
   ]
 
-card : Model -> Int -> Directory -> Material.Grid.Cell Msg
+eventList : Maybe IndyApi.FileSystem -> Html Msg
+eventList mfs = case mfs of
+  Nothing -> text "No files found"
+  Just fs ->
+    Lists.ul
+        -- [ css "margin" "0", css "padding" "0", css "height" "auto", css "background" "white"]
+        [ css "margin" "0", css "padding" "0", css "height" "auto"]
+        (List.map listItem fs.files)
+
+listItem : String -> Html Msg
+listItem data =
+  Lists.li
+    [ ]
+    [ Lists.content
+        [Typography.caption, white]
+        [ Icon.view "insert_drive_file" [blueGreyBG], text data ]
+    ]
+
+card : Model -> Int -> WatchedDirectory -> Material.Grid.Cell Msg
 card model idx directory =
     let menuIcon = if (Model.isShowingFiles model idx) then "insert_drive_file" else "list"
         cardView = if (Model.isShowingFiles model idx) == False then (cardViewTop model idx directory)

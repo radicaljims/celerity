@@ -5,18 +5,18 @@ import Json.Decode as Json exposing (..)
 
 type alias Id = Int
 
-type alias Directory =
-  { directoryPath : String
-  , shortName : String
-  , usedSpace : Int }
+-- type alias Directory =
+--   { directoryPath : String
+--   , shortName : String
+--   , usedSpace : Int }
 
-directoryDecoder : Json.Decoder Directory
-directoryDecoder =
-  Json.object3
-    Directory
-      ("directoryPath" := Json.string)
-      ("shortName" := Json.string)
-      ("usedSpace" := Json.int)
+-- directoryDecoder : Json.Decoder Directory
+-- directoryDecoder =
+--   Json.object3
+--     Directory
+--       ("directoryPath" := Json.string)
+--       ("shortName" := Json.string)
+--       ("usedSpace" := Json.int)
 
-directoryListDecoder : Json.Decoder (List Directory)
-directoryListDecoder = Json.list directoryDecoder
+-- directoryListDecoder : Json.Decoder (List Directory)
+-- directoryListDecoder = Json.list directoryDecoder

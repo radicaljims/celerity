@@ -2,7 +2,7 @@ module Model exposing (..)
 
 import Material
 
-import DirectoryModel exposing (getDirectories)
+import DirectoryModel exposing (fetchDirectories)
 import EventModel exposing (getEvents)
 
 type Tab = Events | Directories | Alerts
@@ -25,7 +25,7 @@ emptyModel =
 init : (Model, Cmd Msg)
 -- TODO: let's see if we can just directly generate a GetDirectories event instead of exposing
 -- getDirectories
-init = emptyModel ! [Cmd.map DM getDirectories]
+init = emptyModel ! [Cmd.map DM fetchDirectories]
 
 type Msg =
     NoOp
@@ -43,7 +43,7 @@ update comm model =
       let
         intToTab n = if n == 1 then Events else if n == 2 then Alerts else Directories
         -- TODO: find a better solution to this Cmd.map composition
-        dator n = if n == 1 then (Cmd.map EM (Cmd.map EventModel.Comms getEvents)) else if n == 2 then Cmd.none else (Cmd.map DM getDirectories)
+        dator n = if n == 1 then (Cmd.map EM (Cmd.map EventModel.Comms getEvents)) else if n == 2 then Cmd.none else (Cmd.map DM fetchDirectories)
       in
         { model | activeTab = intToTab t} ! [dator t]
 

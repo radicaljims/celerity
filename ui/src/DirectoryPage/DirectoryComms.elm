@@ -1,12 +1,14 @@
 module DirectoryComms exposing (..)
 
-import Http
-import Task exposing (Task)
+type alias Fid = Int
 
-import DirectoryTypes exposing (Directory, directoryListDecoder)
+-- import Http
+-- import Task exposing (Task)
 
-fetchDirectories : (List Directory -> a) -> (String -> a) -> Cmd a
-fetchDirectories s f =
-    Http.get directoryListDecoder "http://localhost:8081/directories"
-        |> Task.mapError toString
-        |> Task.perform f s
+-- import DirectoryTypes exposing (Directory, directoryListDecoder)
+
+-- fetchDirectories : (List Directory -> a) -> (String -> a) -> Cmd a
+-- fetchDirectories s f =
+--     Http.get directoryListDecoder "http://localhost:8081/directories"
+--         |> Task.mapError toString
+--         |> Task.perform f s
