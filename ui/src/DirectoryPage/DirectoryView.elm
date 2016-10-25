@@ -80,7 +80,7 @@ cardViewFiles model idx directory =
       [
         Options.div [css "height" "350px", css "margin" "1px", css "width" "475px", css "overflow" "auto"] [eventList (Dict.get idx model.events)]
       ]
-  , expander
+  -- , expander
   ]
 
 eventList : Maybe IndyApi.FileSystem -> Html Msg
@@ -97,8 +97,11 @@ listItem data =
   Lists.li
     [ ]
     [ Lists.content
-        [Typography.caption, white]
-        [ Icon.view "insert_drive_file" [blueGreyBG], text data ]
+        -- [Typography.caption, white]
+        [white]
+        [ Lists.avatarIcon "insert_drive_file" [Color.background (Color.color Color.DeepPurple Color.S300)], text data]
+        -- [ Icon.view "insert_drive_file" [blueGreyBG], text data ]
+        -- [ Icon.view "insert_drive_file" [blueGreyBG], text data ]
     ]
 
 card : Model -> Int -> WatchedDirectory -> Material.Grid.Cell Msg
@@ -111,7 +114,9 @@ card model idx directory =
       [ Card.view
           [ cellCssWidth model idx
           , css "height" "256px"
-          , Color.background (Color.color Color.DeepPurple Color.S400)
+          -- , Color.background (Color.color Color.DeepPurple Color.S400)
+          -- , Color.background (Color.color Color.Orange Color.S800)
+          , Color.background (Color.color Color.BlueGrey Color.S300)
           , dynamic idx model
           , css "margin" "10px"
           , css "padding" "10px"

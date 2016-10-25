@@ -56,9 +56,6 @@ view : Model -> Html Msg
 view model =
   div []
       [ eventList model ]
-    -- [ fetch model 0 Model.GetCopies "Get Events"
-    -- , eventList model
-    -- ]
 
 listItem : Data -> Html Msg
 listItem data =
@@ -70,9 +67,9 @@ listItem data =
       [ Lists.content
           []
           [ Lists.avatarIcon
-              "insert_drive_file" [Color.background iconColor]
-          ,   text prettyType
-          ,   Lists.subtitle [] [ text data.filePath ]
+            "insert_drive_file" [Color.background iconColor]
+          , text prettyType
+          , Lists.subtitle [] [ text data.filePath ]
           ]
       ]
 
